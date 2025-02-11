@@ -1,8 +1,10 @@
 import { Category, Product } from "@/sanity.types";
+import CategorySelectorComponent from "./CategorySelectorComponent";
+import ProductGrid from "./ProductGrid";
 
 interface ProductsViewProps {
     products: Product[];
-    catergories: Category[];
+    categories: Category[];
 }
 
 
