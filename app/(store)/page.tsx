@@ -1,11 +1,33 @@
+import ProductsView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
+import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shopit",
+  description: "Developed by Subhan Anwer",
+};
 
 
-export default function Home() {
+
+export default async function Home() {
+  const products = await getAllProducts();
+
+  // console.log(
+  //   crypto.randomUUID().slice(0, 5) +
+  //   `Rendered the home page cache with ${products.length} products & ${categories.length} categories`
+  // )
+
+
   return (
-    <div className="bg-slate-300 p-9 flex items-center justify-center flex-col gap-3" >
+    <div>
       <h1>Hello world!!!</h1>
-      <Button className="active:scale-90 transition-transform duration-200">Click me</Button>
+
+      <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
+        <ProductsView products={products} catergories={categories} />
+      </div>
+
+      {/* <Button className="active:scale-90 transition-transform duration-200">Click me</Button> */}
     </div>
   );
 }
