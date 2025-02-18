@@ -5,6 +5,9 @@ const CategorySelectorComponent = ({categories}: {categories: Category[]}) => {
   return (
     <div className='p-4 bg-blue-500'>
       Category Selector Component
+      {categories && (
+        <div>here&apos;s your categories</div>
+      )}
     </div>
   )
 }
