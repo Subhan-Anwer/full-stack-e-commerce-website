@@ -1,6 +1,6 @@
 import { Category, Product } from "@/sanity.types";
-import CategorySelectorComponent from "./CategorySelectorComponent";
 import ProductGrid from "./ProductGrid";
+import { CategorySelectorComponent } from "./ui/category-selector";
 
 interface ProductsViewProps {
     products: Product[];
