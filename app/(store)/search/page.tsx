@@ -1,21 +1,37 @@
-// const SearchPage = async ({ searchParams }: { searchParams: { query: string } }) => {
+import ProductGrid from "@/components/ProductGrid";
+import { searchProductsByName } from "@/sanity/lib/products/searchProductsByName";
 
-//   const { query } = searchParams
+const SearchPage = async ({searchParams}: {searchParams: Promise<{query: string}>}) => {
 
-//   return (
-//     <div>
-//       <h3 className="font-normal text-lg">Your Search is &quot;<span className="font-bold text-lg">{query}</span>&quot;</h3>
-//     </div>
-//   )
-// }
+  const { query } = await searchParams;
+  const products = await searchProductsByName(query);
+  console.log("products:", products)
+  
 
-// export default SearchPage
+  if(!products.length) {
+    return (
+      <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl text-center">
+          <h1 className="text-3xl font-bold mb-6">
+            No Products found for: {query}
+          </h1>
+          <p className="text-gray-600">
+            Try searching with different keywords
+          </p>
+        </div>
+      </div>
+    )
+  }
 
-import React from 'react'
-
-const SearchPage = () => {
   return (
-    <div className='mx-auto p-6 text-xl font-bold'>This is a Search page</div>
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4">
+      <div className="bg-white p-8 rounded-[5px] shadow-md w-full">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Search results for &quot;{query}&quot;
+        </h1>
+        <ProductGrid products={products} /> 
+      </div>
+    </div>
   )
 }
 
