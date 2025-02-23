@@ -1,25 +1,25 @@
 "use client";
 
-import { Category } from "@/sanity.types";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChevronsUpDown, Check } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandInput,
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  CommandList,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandInput,
-} from "@/components/ui/command";
-import { cn } from "@/lib/utils";
-import { ChevronsUpDown, Check } from "lucide-react";
-import { log } from "console";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Category } from "@/sanity.types";
 
 interface CategorySelectorProps {
   categories: Category[];
@@ -42,11 +42,9 @@ export function CategorySelectorComponent({
           aria-expanded={open}
           className="min-w-[230px] w-full max-w-full relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 hover:text-white text-white text-lg font-bold py-6 px-6 rounded-[8px]"
         >
-          {
-            value
+          {value
               ? categories.find((category) => category._id === value)?.title
-              : "Filter by Category" /*title*/
-          }
+              : "Filter by Category"}
 
           {/* Icon */}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
@@ -58,7 +56,7 @@ export function CategorySelectorComponent({
           <CommandInput
             placeholder="Search category..."
             className="h-9"
-            onKeyDown={(e: any) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const selectedCategory = categories.find((c) =>
                   c.title
@@ -79,7 +77,7 @@ export function CategorySelectorComponent({
             <CommandGroup>
               {categories.map((category) => (
                 <CommandItem
-                  
+
                   key={category._id}
                   value={category.title}
                   onSelect={() => {
@@ -90,15 +88,14 @@ export function CategorySelectorComponent({
                 >
                   {category.title}
 
-
-                  {/* Check Icon */}
                   <Check
                     className={cn(
                       "ml-auto h-4 w-4",
-                      value === category._id ? "opacity-100" : "opacity-100"
+                      value === category._id ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {console.log}
+
+
                 </CommandItem>
               ))}
             </CommandGroup>
