@@ -1,5 +1,6 @@
 "use client";
 
+import { createCheckoutSession } from "@/actions/createCheckoutSession";
 import AddToBasketButton from "@/components/AddToBasketButton";
 import Loader from "@/components/ui/Loader";
 import { imageUrl } from "@/lib/imageUrl";
@@ -55,8 +56,15 @@ function basketPage() {
                 customerEmail: user?.emailAddresses[0].emailAddress ?? "Unknown",
                 clerkUserId: user!.id,
             };
+
+            const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl;
+            }
+
         } catch (error) {
-            console.error("Error creating checkout session:" ,error);
+            console.error("Error handling checkout session:" ,error);
         } finally {
             setIsLoading(false);
         }
