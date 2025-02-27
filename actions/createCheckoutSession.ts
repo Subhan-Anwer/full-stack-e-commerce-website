@@ -6,10 +6,10 @@ import { BasketItem } from "@/store/store";
 import { console } from "inspector";
 
 export type Metadata = {
-    orderNumber: string,
-    customeName: string,
-    customerEmail: string,
-    clerkUserId: string,
+  orderNumber: string,
+  customeName: string,
+  customerEmail: string,
+  clerkUserId: string,
 }
 
 export type GroupedBasketItems = {
@@ -39,6 +39,16 @@ export async function createCheckoutSession(
       customerId = customer.data[0].id;
     }
 
+    const baseUrl = process.env.NODE_ENV === "production"
+      ? `https://${process.env.VERCEL_URL}`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}`
+
+    const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`;
+    const cancelUrl = `${baseUrl}/basket`;
+
+    console.log("successUrl >>>>>>", successUrl);
+    console.log("CancelUrl >>>>>>>", cancelUrl);
+
     // Creating a checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -46,8 +56,8 @@ export async function createCheckoutSession(
       customer_email: !customerId ? metadata.customerEmail : undefined,
       mode: "payment",
       allow_promotion_codes: true,
-      success_url: `${`https://${process.env.VERCEL_URL}` || process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`,
-      cancel_url: `${`https://${process.env.VERCEL_URL}` || process.env.NEXT_PUBLIC_BASE_URL}/basket`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       line_items: items.map((item) => ({
         price_data: {
           currency: "usd",
@@ -59,8 +69,8 @@ export async function createCheckoutSession(
               id: item.product._id,
             },
             images: item.product.image
-            ? [imageUrl(item.product.image).url()]
-            : undefined,
+              ? [imageUrl(item.product.image).url()]
+              : undefined,
           },
         },
         quantity: item.quantity,
