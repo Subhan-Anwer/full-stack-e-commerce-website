@@ -1,7 +1,7 @@
 "use client";
 
 import { createCheckoutSession } from "@/actions/createCheckoutSession";
-import AddToBasketButton from "@/components/AddToBasketButton";
+import AddOrRemoveFromBasketButton from "@/components/AddOrRemoveFromBasketButton";
 import Loader from "@/components/ui/Loader";
 import { imageUrl } from "@/lib/imageUrl";
 import useBasketStore from "@/store/store";
@@ -120,7 +120,7 @@ function basketPage() {
 
 
                             <div className="flex items-center justify-center mt-3 sm:mt-0 sm:ml-4 ml-0 flex-shrink-0">
-                                <AddToBasketButton product={item.product} disabled={false} />
+                                <AddOrRemoveFromBasketButton product={item.product} disabled={false} />
                             </div>
                         </div>
                     ))}
