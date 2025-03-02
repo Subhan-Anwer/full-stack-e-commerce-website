@@ -7,7 +7,7 @@ import { console } from "inspector";
 
 export type Metadata = {
   orderNumber: string,
-  customeName: string,
+  customerName: string,
   customerEmail: string,
   clerkUserId: string,
 }
