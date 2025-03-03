@@ -1,23 +1,22 @@
-import { Metadata } from "@/actions/createCheckoutSession";
 import stripe from "@/lib/stripe";
 import { backendClient } from "@/sanity/lib/backendClient";
-import { error } from "console";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Metadata } from "@/actions/createCheckoutSession";
 
 export async function POST(req: NextRequest) {
     const body = await req.text();
-    const headerList = await headers();
-    const sig = headerList.get("stripe-signature");
+    const headersList = await headers();
+    const sig = headersList.get("stripe-signature");
 
-    if(!sig) {
+    if (!sig) {
         return NextResponse.json({ error: "No signature" }, { status: 400 });
     }
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-    if(!webhookSecret) {
+    if (!webhookSecret) {
         console.log("stripe webhook secret is not set.");
         return NextResponse.json({ error: "Stripe webhook secret is not set" }, { status: 400 });
     }
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest) {
         event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err) {
         console.error("webhook signature verification failed:", err);
-        return NextResponse.json({error: `Webhook Error: ${err}`}, { status: 400 });
+        return NextResponse.json({ error: `Webhook Error: ${err}` }, { status: 400 });
     }
 
 
@@ -39,7 +38,7 @@ export async function POST(req: NextRequest) {
             console.log("order created in sanity", order);
         } catch (err) {
             console.error("error creating order in sanity:", err);
-            return NextResponse.json({error: "Error creating order in sanity"}, { status: 500 });
+            return NextResponse.json({ error: "Error creating order in sanity" }, { status: 500 });
         }
     }
 
@@ -59,7 +58,8 @@ async function createOrderInSanity(session: Stripe.Checkout.Session) {
         total_details,
     } = session;
 
-    const {orderNumber, customerName,customerEmail, clerkUserId} = metadata as Metadata;
+    const { orderNumber, customerName, customerEmail, clerkUserId } = metadata as Metadata;
+    console.log("metadata:", metadata);
 
     const lineItemsWithoutProduct = await stripe.checkout.sessions.listLineItems(
         id,

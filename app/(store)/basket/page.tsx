@@ -9,10 +9,9 @@ import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-
 export type Metadata = {
     orderNumber: string,
-    customeName: string,
+    customerName: string,
     customerEmail: string,
     clerkUserId: string,
 }
@@ -52,7 +51,7 @@ function basketPage() {
         try {
             const metadata: Metadata = {
                 orderNumber: crypto.randomUUID(),
-                customeName: user?.fullName ?? "Unknown",
+                customerName: user?.fullName ?? "Unknown",
                 customerEmail: user?.emailAddresses[0].emailAddress ?? "Unknown",
                 clerkUserId: user!.id,
             };
@@ -64,7 +63,7 @@ function basketPage() {
             }
 
         } catch (error) {
-            console.error("Error handling checkout session:" ,error);
+            console.error("Error handling checkout session:", error);
         } finally {
             setIsLoading(false);
         }
@@ -108,7 +107,7 @@ function basketPage() {
                                         {item.product.name}
                                     </h2>
                                     <p className="text-sm sm:text-base">
-                                        Price: $ {item.product.price?.toFixed(2)} 
+                                        Price: $ {item.product.price?.toFixed(2)}
                                     </p>
                                     <p className="text-sm sm:text-base">
                                         Quantity: {item.quantity}
@@ -116,16 +115,12 @@ function basketPage() {
                                 </div>
                             </div>
 
-
-
-
                             <div className="flex items-center justify-center mt-3 sm:mt-0 sm:ml-4 ml-0 flex-shrink-0">
                                 <AddOrRemoveFromBasketButton product={item.product} disabled={false} />
                             </div>
                         </div>
                     ))}
                 </div>
-
 
                 {/* Summary Section */}
                 <div className="w-full lg-w-80 lg:sticky lg:top-4 h-fit bg-white p-6 border border-gray-300 rounded-[6px] order-first lg:order-last fixed bottom-0 left-0 lg:left-auto">
@@ -152,7 +147,7 @@ function basketPage() {
                             //   disabled={isLoading}
                             className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
                         >
-                            {isLoading ? "Processing..." : "Checkout"} 
+                            {isLoading ? "Processing..." : "Checkout"}
                         </button>
                     ) : (
                         <SignInButton mode="modal">
@@ -163,11 +158,9 @@ function basketPage() {
                     )}
                 </div>
 
-
                 <div className="h-64 lg:h-0">
                     {/* Space for fixed checkout on mobile */}
                 </div>
-
             </div>
         </div>
     )

@@ -8,7 +8,7 @@ export async function getMyOrders(userId: string) {
 
     // Define the query to get my orders based on user Id, sorted by order date descending
     const MY_ORDERS_QUERY = defineQuery(`
-            *[_type == "order" 
+            *[_type == "order" && clerkUserId == $userId
             ] | order(orderDate desc) {
                 ...,
                 products[]{

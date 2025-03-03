@@ -3,13 +3,12 @@
 import { imageUrl } from "@/lib/imageUrl";
 import stripe from "@/lib/stripe";
 import { BasketItem } from "@/store/store";
-import { console } from "inspector";
 
 export type Metadata = {
-  orderNumber: string,
-  customerName: string,
-  customerEmail: string,
-  clerkUserId: string,
+    orderNumber: string,
+    customerName: string,
+    customerEmail: string,
+    clerkUserId: string,
 }
 
 export type GroupedBasketItems = {
@@ -54,6 +53,7 @@ export async function createCheckoutSession(
       customer: customerId,
       customer_creation: customerId ? undefined : "always",
       customer_email: !customerId ? metadata.customerEmail : undefined,
+      metadata,
       mode: "payment",
       allow_promotion_codes: true,
       success_url: successUrl,
@@ -74,8 +74,8 @@ export async function createCheckoutSession(
           },
         },
         quantity: item.quantity,
-      }))
-    })
+      })),
+    });
 
     return session.url;
 
