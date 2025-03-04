@@ -93,7 +93,7 @@ export type Order = {
   stripeCheckoutSessionId?: string;
   stripeCustomerId?: string;
   clerkUserId?: string;
-  CustomerName?: string;
+  customerName?: string;
   email?: string;
   stripePaymentIntentId?: string;
   products?: Array<{
@@ -293,7 +293,7 @@ export type MY_ORDERS_QUERYResult = Array<{
   stripeCheckoutSessionId?: string;
   stripeCustomerId?: string;
   clerkUserId?: string;
-  CustomerName?: string;
+  customerName?: string;
   email?: string;
   stripePaymentIntentId?: string;
   products: Array<{

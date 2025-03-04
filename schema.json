@@ -474,7 +474,7 @@
         },
         "optional": true
       },
-      "CustomerName": {
+      "customerName": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
