@@ -5,10 +5,10 @@ import stripe from "@/lib/stripe";
 import { BasketItem } from "@/store/store";
 
 export type Metadata = {
-    orderNumber: string,
-    customerName: string,
-    customerEmail: string,
-    clerkUserId: string,
+  orderNumber: string,
+  customerName: string,
+  customerEmail: string,
+  clerkUserId: string,
 }
 
 export type GroupedBasketItems = {
@@ -22,20 +22,20 @@ export async function createCheckoutSession(
 ) {
   try {
     // check if group items dont have price
-    const itemsWithouPrice = items.filter((item) => !item.product.price);
-    if (itemsWithouPrice.length > 0) {
+    const itemsWithoutPrice = items.filter((item) => !item.product.price);
+    if (itemsWithoutPrice.length > 0) {
       throw new Error("Some items don't have a price");
     }
 
     // Search for existing customer by email
-    const customer = await stripe.customers.list({
+    const customers = await stripe.customers.list({
       email: metadata.customerEmail,
       limit: 1,
     })
 
     let customerId: string | undefined;
-    if (customer.data.length > 0) {
-      customerId = customer.data[0].id;
+    if (customers.data.length > 0) {
+      customerId = customers.data[0].id;
     }
 
     const baseUrl = process.env.NODE_ENV === "production"
@@ -45,8 +45,8 @@ export async function createCheckoutSession(
     const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`;
     const cancelUrl = `${baseUrl}/basket`;
 
-    console.log("successUrl >>>>>>", successUrl);
-    console.log("CancelUrl >>>>>>>", cancelUrl);
+    // console.log("successUrl >>>>>>", successUrl);
+    // console.log("CancelUrl >>>>>>>", cancelUrl);
 
     // Creating a checkout session
     const session = await stripe.checkout.sessions.create({
@@ -74,10 +74,12 @@ export async function createCheckoutSession(
           },
         },
         quantity: item.quantity,
-      })),
-    });
+      }))
+    })
 
+    // console.log("Checkout session created:", session);
     return session.url;
+
 
   } catch (error) {
     console.error("Error creating checkout session:", error);

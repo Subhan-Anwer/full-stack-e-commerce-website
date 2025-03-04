@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
     const headersList = await headers();
     const sig = headersList.get("stripe-signature");
 
+    console.log("HIT WEBHOOK");
+
     if (!sig) {
         return NextResponse.json({ error: "No signature" }, { status: 400 });
     }
@@ -18,7 +20,10 @@ export async function POST(req: NextRequest) {
 
     if (!webhookSecret) {
         console.log("stripe webhook secret is not set.");
-        return NextResponse.json({ error: "Stripe webhook secret is not set" }, { status: 400 });
+        return NextResponse.json(
+            { error: "Stripe webhook secret is not set" },
+            { status: 400 }
+        );
     }
 
     let event: Stripe.Event;
@@ -26,9 +31,11 @@ export async function POST(req: NextRequest) {
         event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err) {
         console.error("webhook signature verification failed:", err);
-        return NextResponse.json({ error: `Webhook Error: ${err}` }, { status: 400 });
+        return NextResponse.json(
+            { error: `Webhook Error: ${err}` },
+            { status: 400 }
+        );
     }
-
 
     if (event.type === "checkout.session.completed") {
         const session = event.data.object as Stripe.Checkout.Session;
@@ -37,15 +44,16 @@ export async function POST(req: NextRequest) {
             const order = await createOrderInSanity(session);
             console.log("order created in sanity", order);
         } catch (err) {
-            console.error("error creating order in sanity:", err);
-            return NextResponse.json({ error: "Error creating order in sanity" }, { status: 500 });
+            console.error("Error creating order in sanity:", err);
+            return NextResponse.json(
+                { error: "Error creating order in sanity" },
+                { status: 500 }
+            );
         }
     }
 
     return NextResponse.json({ received: true });
-
 }
-
 
 async function createOrderInSanity(session: Stripe.Checkout.Session) {
     const {
@@ -58,9 +66,9 @@ async function createOrderInSanity(session: Stripe.Checkout.Session) {
         total_details,
     } = session;
 
-    const { orderNumber, customerName, customerEmail, clerkUserId } = metadata as Metadata;
-    console.log("metadata:", metadata);
-
+    const { orderNumber, customerName, customerEmail, clerkUserId } = 
+        metadata as Metadata;
+    
     const lineItemsWithoutProduct = await stripe.checkout.sessions.listLineItems(
         id,
         {
@@ -97,5 +105,4 @@ async function createOrderInSanity(session: Stripe.Checkout.Session) {
     });
 
     return order;
-
 }

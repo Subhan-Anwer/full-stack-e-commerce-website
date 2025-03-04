@@ -13,7 +13,7 @@ export async function OrdersPage() {
     }
 
     const orders = await getMyOrders(userId);
-    console.log("Your orders", orders);
+    // console.log("Your orders", orders);
 
     const localCurrency = "USD";
 
