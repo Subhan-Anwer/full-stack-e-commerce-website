@@ -8,7 +8,7 @@ import { draftMode } from "next/headers";
 // import { Preview } from "sanity";
 
 
-const token = process.env.SANITY_API_TOKEN;
+const token = process.env.SANITY_API_READ_TOKEN;
 
 export async function GET(request: Request) {
     const {isValid, redirectTo = "/"} = await validatePreviewUrl(
