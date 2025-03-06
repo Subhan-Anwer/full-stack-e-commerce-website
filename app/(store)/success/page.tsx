@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-function successPage() {
+export default function SuccessPage() {
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get("orderNumber");
   const clearBasket = useBasketStore((state) => state.clearBasket);
@@ -102,5 +102,3 @@ function successPage() {
     </div>
   )
 }
-
-export default successPage;

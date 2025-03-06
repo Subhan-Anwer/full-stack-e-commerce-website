@@ -3,7 +3,6 @@
 import { Product } from "@/sanity.types"
 import useBasketStore from "@/store/store";
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
 
 function AddOrRemoveFromBasketButton(
     { product, disabled }:

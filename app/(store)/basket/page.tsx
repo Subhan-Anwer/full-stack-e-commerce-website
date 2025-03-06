@@ -16,7 +16,7 @@ export type Metadata = {
     clerkUserId: string,
 }
 
-function basketPage() {
+export default function BasketPage() {
     const groupedItems = useBasketStore((state) => state.getGroupedItems());
     const { isSignedIn } = useAuth();
     const { user } = useUser();
@@ -166,4 +166,3 @@ function basketPage() {
     )
 }
 
-export default basketPage;

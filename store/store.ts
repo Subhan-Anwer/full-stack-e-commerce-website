@@ -19,7 +19,7 @@ interface BasketState {
     getGroupedItems: () => BasketItem[];
 }
 
-const useBasketStore = create<BasketState>()(
+export  const useBasketStore = create<BasketState>()(
     persist(
         (set, get) => ({
             items: [],

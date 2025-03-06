@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-export async function OrdersPage() {
+export default async function OrdersPage() {
     const { userId } = await auth();
 
     if (!userId) {
@@ -26,12 +26,12 @@ export async function OrdersPage() {
 
                 {orders.length === 0 ? (
                     <div className="text-center text-gray-600">
-                        <p>You haven't placed any orders yet.</p>
+                        <p>You haven&lsquo;t placed any orders yet.</p>
                     </div>
 
                 ) : (
                     <div className="space-y-6 sm:space-y-8">
-                        {orders.map((order: any) => (
+                        {orders.map((order) => (
                             <div
                                 key={order.orderNumber}
                                 className="bg-white border border-gray-200 rounded-[8px] shadow-sm overflow-hidden"
@@ -82,13 +82,13 @@ export async function OrdersPage() {
                                         <div className="mt-4 p-3 sm:p-4 bg-red-50 rounded-lg">
                                             <p className="text-red-600 font-medium mb-1 text-sm sm:text-base">
                                                 Discount Applied:{" "}
-                                                {formatCurrency(order.amountDiscount, order.currency)}
+                                                {formatCurrency(order.amountDiscount, order.currency??localCurrency)}
                                             </p>
                                             <p className="text-sm text-gray-600">
                                                 Original Subtotal:{" "}
                                                 {formatCurrency(
                                                     (order.totalPrice ?? 0) + order.amountDiscount,
-                                                    order.currency
+                                                    order.currency??localCurrency
                                                 )}
                                             </p>
                                         </div>
@@ -102,7 +102,7 @@ export async function OrdersPage() {
                                         Order Items
                                     </p>
                                     <div className="space-y-3 sm:space-y-4">
-                                        {order.products?.map((product: any) => (
+                                        {order.products?.map((product) => (
                                             <div
                                                 key={product.product?._id}
                                                 className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-0 pb-4 border-b last:border-b-0"
@@ -112,7 +112,7 @@ export async function OrdersPage() {
                                                         <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-md overflow-hidden">
                                                             <Image
                                                                 src={imageUrl(product.product.image).url()}
-                                                                alt={product.name ?? "Product Image"}
+                                                                alt={product?.product.name ?? "Product Image"}
                                                                 className="object-cover rounded-[8px]"
                                                                 fill
                                                             />
@@ -129,7 +129,7 @@ export async function OrdersPage() {
                                                     {product.product?.price && product.quantity
                                                         ? formatCurrency(
                                                             product.product.price * product.quantity,
-                                                            order.currency
+                                                            order.currency??localCurrency
                                                         ) : "N/A"
                                                     }
                                                 </p>
@@ -143,12 +143,12 @@ export async function OrdersPage() {
                             </div>
 
 
-                        ))}
+                        ))
+                        }
+                        
                     </div>
                 )}
             </div>
         </div>
     )
 };
-
-export default OrdersPage;
