@@ -2,8 +2,14 @@ import { formatCurrency } from "@/lib/formatCurrency";
 import { imageUrl } from "@/lib/imageUrl";
 import { getMyOrders } from "@/sanity/lib/orders/getMyOrders";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+    title: "Shopit | Orders",
+    description: "Developed by Subhan Anwer",
+  };
 
 export default async function OrdersPage() {
     const { userId } = await auth();
