@@ -44,7 +44,7 @@ async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
           )}
         </div>
 
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col ">
           <div>
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <div className="text-xl font-semibold mb-4">
@@ -58,7 +58,7 @@ async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
           </div>
 
 
-          <div className="mt-6">
+          <div className="mt-16 mb-6">
             {/* <AddToBasketButton product={product} disabled={isOutOfStock} /> */}
             <AddToBasketButton product={product} disabled={isOutOfStock} />
             
