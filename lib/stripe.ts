@@ -1,11 +1,11 @@
-import Stripe from 'stripe'
+// import Stripe from 'stripe'
 
-if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error('No STRIPE_SECRET_KEY provided')
-}
+// if (!process.env.STRIPE_SECRET_KEY) {
+//     throw new Error('No STRIPE_SECRET_KEY provided')
+// }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2025-02-24.acacia',
-});
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+//     apiVersion: '2025-02-24.acacia',
+// });
 
-export default stripe;
+// export default stripe;

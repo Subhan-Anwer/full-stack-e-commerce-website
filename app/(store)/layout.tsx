@@ -1,41 +1,44 @@
-import type { Metadata } from "next";
-
 import "../globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import Header from "../../components/Header"
-import { SanityLive } from "@/sanity/lib/live";
-import { VisualEditing } from "next-sanity";
-import { draftMode } from "next/headers";
-import { DisableDraftmode } from "@/components/DisableDraftmode";
+import type { Metadata } from "next";
+import { Inter, Poppins, Playfair_Display } from "next/font/google";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Shopit ",
+  title: "Classy Style | Jewelry and Accessories",
   description: "Developed by Subhan Anwer",
 };
 
-export default async function RootLayout({
+export const inter = Inter({
+  subsets: ["latin"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  
+  weight: ["100", "200", "400", "700", "900"],
+});
+
+export const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  
+});
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider dynamic>
-      <html lang="en">
-        <body className="min-h-screen">
-          {(await draftMode()).isEnabled && (
-            <>
-              <DisableDraftmode />
-              <VisualEditing />
-            </>
-          )}
-          <main>
-            <Header />
-            {children}
-          </main>
-
-          <SanityLive />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${inter.className} ${playfair.className} ${poppins.className} antialiased`}
+      >
+        <Header />
+        {children}
+        <Footer />
+      </body>
+    </html>
   );
 }
